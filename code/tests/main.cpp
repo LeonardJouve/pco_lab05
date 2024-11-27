@@ -13,14 +13,13 @@ void test(int nbThreads, int size, int seed) {
     Quicksort<int> sorter(nbThreads);
     std::vector<int> array = generateSequence(size, seed);
     sorter.sort(array);
+
     EXPECT_FALSE(array.empty());  // check that the result is not empty
     EXPECT_TRUE(isSorted(array)); // check that result is sorted
 }
 
-
-TEST(SortingTest, Test1) {
-    // TODO: Modify this test, and add others
-    int size = 0;
+TEST(SortingTest, Test) {
+    int size = 10;
     int nbThreads = 0;
     int seed = 0;
 
