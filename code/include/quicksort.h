@@ -17,8 +17,7 @@
 template<typename T>
 class Quicksort : public MultithreadedSort<T> {
 public:
-    Quicksort(unsigned int nbThreads) : MultithreadedSort<T>(nbThreads), threads(nbThreads) {
-        monitor = new Monitor<T>(this);
+    Quicksort(unsigned int nbThreads) : MultithreadedSort<T>(nbThreads), threads(nbThreads), monitor(this) {
         for (int i = 0; i < nbThreads; ++i) {
             threads[i] = new PcoThread(&Monitor<T>::executeTask, &monitor);
         }
@@ -29,8 +28,8 @@ public:
      * @param array is the sequence to sort
      */
     void sort(std::vector<T> &array) override {
-        //quicksort({ array, 0, array.size() });
-        monitor->scheduleTask({ array, 0, array.size() });
+        //quicksort({ array, 0, (int) array.size() });
+        monitor.scheduleTask({ array, 0, (int) array.size() });
 
         for (size_t i = 0; i < threads.size(); ++i) {
             threads[i]->join();
@@ -39,28 +38,32 @@ public:
     }
 
     void quicksort(Task<T> task) {
+        //std::cout << "execute task " << task.begin << " " << task.end << std::endl;
         if (task.begin >= task.end || task.begin < 0) {
-            monitor->flushTasks();
+            monitor.flushTasks();
             return;
         }
 
-        size_t pivot = partition(task);
+        int pivot = partition(task);
 
         monitor.scheduleTask({ task.values, task.begin, pivot - 1 });
         monitor.scheduleTask({ task.values, pivot + 1, task.end });
 
         monitor.executeTask();
         //quicksort({ task.values, task.begin, pivot - 1 });
+        //std::cout << "schedule task " << task.begin << " " << pivot - 1<< std::endl;
+
         //quicksort({ task.values, pivot + 1, task.end });
+        //std::cout << "schedule task " << pivot + 1 << " " << task.end << std::endl;
     }
 
 private:
 
-    size_t partition(Task<T> task) {
+    int partition(Task<T> task) {
         T p = task.values[task.end];
-        size_t pivot = task.begin;
+        int pivot = task.begin;
 
-        for (size_t i = task.begin; i < task.end; ++i) {
+        for (int i = task.begin; i < task.end; ++i) {
             if (task.values[i] <= p) {
                 std::swap(task.values[i], task.values[pivot]);
                 ++pivot;

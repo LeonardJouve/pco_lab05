@@ -16,12 +16,19 @@ void test(int nbThreads, int size, int seed) {
 
     EXPECT_FALSE(array.empty());  // check that the result is not empty
     EXPECT_TRUE(isSorted(array)); // check that result is sorted
+
+    for (int i : array) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
 }
 
 TEST(SortingTest, Test) {
     int size = 10;
-    int nbThreads = 0;
+    int nbThreads = 10;
     int seed = 0;
+
+    std::cout << "Yoo" << std::endl;
 
     test(nbThreads, size, seed);
 }
