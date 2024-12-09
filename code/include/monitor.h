@@ -16,7 +16,7 @@ template <typename T>
 class Monitor {
     PcoConditionVariable conditionVariable;
     PcoMutex mutex;
-    std::vector<Task<T>> tasks;
+    std::queue<Task<T>> tasks;
     bool flag;
     Quicksort<T> *quicksort;
 
@@ -27,7 +27,7 @@ public:
 
         std::cout << "schedule task " << task.begin << " " << task.end << std::endl;
         mutex.lock();
-        tasks.push_back(task);
+        tasks.push(task);
         mutex.unlock();
         conditionVariable.notifyOne();
     }
@@ -44,8 +44,8 @@ public:
             return;
         }
 
-        Task<T> task = tasks.back();
-        tasks.pop_back();
+        Task<T> task = tasks.front();
+        tasks.pop();
 
         mutex.unlock();
 
