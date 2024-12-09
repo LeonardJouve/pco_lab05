@@ -23,36 +23,41 @@ Afin d'éviter l'attente active des threads, nous avons utilisé un PcoCondition
 
 ## Test
 
-Test de tri simple avec un seul thread :
+1. Test de tri simple avec un seul thread :
 
-Description : Vérifie si l'algorithme QuickSort fonctionne correctement avec un seul thread.
-Entrée : Tableau non trié avec 1000 éléments aléatoires.
-Attendu : Le tableau trié correctement.
-Test avec plusieurs threads (4 threads) :
+   - Description : Vérifie si l'algorithme QuickSort fonctionne correctement avec un seul thread.
+   - Entrée : Tableau non trié avec 1000 éléments aléatoires.
+   - Attendu : Le tableau trié correctement.
 
-Description : Vérifie la parallélisation correcte et le tri avec plusieurs threads.
-Entrée : Tableau non trié avec 1000 éléments aléatoires.
-Attendu : Le tableau trié correctement.
-Test avec tableau de petite taille (10 éléments) :
+2. Test avec plusieurs threads (4 threads) :
 
-Description : Teste si l'algorithme gère les petits tableaux efficacement.
-Entrée : Tableau avec 10 éléments aléatoires.
-Attendu : Le tableau trié correctement.
-Test avec tableau de grande taille (10⁶ éléments) :
+    - Description : Vérifie la parallélisation correcte et le tri avec plusieurs threads.
+    - Entrée : Tableau non trié avec 1000 éléments aléatoires.
+    - Attendu : Le tableau trié correctement.
 
-Description : Évalue les performances et la stabilité avec un grand tableau.
-Entrée : Tableau non trié avec 10⁶ éléments aléatoires.
-Attendu : Le tableau trié correctement.
-Test avec un tableau déjà trié :
+3. Test avec tableau de petite taille (10 éléments) :
 
-Description : Vérifie si l'algorithme gère les cas optimaux efficacement.
-Entrée : Tableau de 1000 éléments déjà triés.
-Attendu : Le tableau reste trié.
-Test avec un tableau trié dans l’ordre inverse :
+    - Description : Teste si l'algorithme gère les petits tableaux efficacement.
+    - Entrée : Tableau avec 10 éléments aléatoires.
+    - Attendu : Le tableau trié correctement.
 
-Description : Évalue la gestion des cas de tri inverse.
-Entrée : Tableau de 1000 éléments triés en ordre décroissant.
-Attendu : Le tableau est trié correctement.
+4. Test avec tableau de grande taille (10⁶ éléments) :
+
+    - Description : Évalue les performances et la stabilité avec un grand tableau.
+    - Entrée : Tableau non trié avec 10⁶ éléments aléatoires.
+    - Attendu : Le tableau trié correctement.
+
+5. Test avec un tableau déjà trié :
+
+    - Description : Vérifie si l'algorithme gère les cas optimaux efficacement.
+    - Entrée : Tableau de 1000 éléments déjà triés.
+    - Attendu : Le tableau reste trié.
+
+6. Test avec un tableau trié dans l’ordre inverse :
+
+    - Description : Évalue la gestion des cas de tri inverse.
+    - Entrée : Tableau de 1000 éléments triés en ordre décroissant.
+    - Attendu : Le tableau est trié correctement.
 
 ## Benchmark
 
