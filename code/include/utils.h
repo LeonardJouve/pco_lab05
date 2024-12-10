@@ -10,7 +10,7 @@
  * @return true si trié, false sinon
  */
 template<typename T>
-bool isSorted(const std::vector<T>& vec) {
+bool isSorted(const std::vector<T> &vec) {
     for (size_t i = 1; i < vec.size(); ++i) {
         if (vec[i - 1] > vec[i]) {
             return false;
@@ -25,8 +25,7 @@ bool isSorted(const std::vector<T>& vec) {
  * @param seed utilisé pour seeder la génération aléatoire de la séquence à trier
  * @return séquence à trier
  */
-std::vector<int> generateSequence(unsigned int seqLen, unsigned int seed)
-{
+std::vector<int> generateSequence(unsigned int seqLen, unsigned int seed) {
     std::mt19937 generator(seed);
     std::uniform_int_distribution<int> distribution(0, seqLen); // [0,seqLen]
 

@@ -20,43 +20,73 @@ class Monitor {
     std::queue<Task<T>> tasks;
     bool flag;
     Quicksort<T> *quicksort;
+    int nbWorking = 0;
+
+    PcoConditionVariable started;
+    bool isStarted = false;
 
 public:
     Monitor(Quicksort<T> *quicksort) : quicksort(quicksort), conditionVariable(false), mutex(), flag(false) {}
 
-    void scheduleTask(Task<T> task) {
-
-        std::cout << "schedule task " << task.begin << " " << task.end << std::endl;
+    bool tasksIsEmpty() {
         mutex.lock();
-        tasks.push(task);
+        int temp = nbWorking;
         mutex.unlock();
+        return tasks.empty() && temp == 0;
+    }
+
+    void decrementNbWorking() {
+        mutex.lock();
+        --nbWorking;
+        mutex.unlock();
+    }
+
+    void scheduleTask(Task<T> task) {
+        mutex.lock();
+        if (!isStarted) {
+            flag = false;
+            isStarted = true;
+            started.notifyAll();
+        }
+        tasks.push(task);
         conditionVariable.notifyOne();
+        mutex.unlock();
     }
 
     void executeTask() {
+        if (flag) {
+            return;
+        }
+        mutex.lock();
+        while (!isStarted) started.wait(&mutex);
 
-        std::cout << "execute task" << std::endl;
+        mutex.unlock();
+
+        if (tasksIsEmpty()) {
+            flushTasks();
+            return;
+        }
 
         mutex.lock();
-        while (tasks.empty()) conditionVariable.wait(&mutex);
-        if (tasks.empty() && flag) {
+        while (tasks.empty() && !flag) conditionVariable.wait(&mutex);
+        if (flag) {
             mutex.unlock();
             return;
         }
 
         Task<T> task = tasks.front();
         tasks.pop();
-
+        ++nbWorking;
         mutex.unlock();
-
-        std::cout << "start task " << task.begin << " " << task.end << std::endl;
 
         quicksort->quicksort(task);
     }
 
     void flushTasks() {
-        std::cout << "flush tasks" << std::endl;
+        mutex.lock();
         flag = true;
         conditionVariable.notifyAll();
+        isStarted = false;
+        mutex.unlock();
     }
 };

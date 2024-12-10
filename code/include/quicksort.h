@@ -18,7 +18,7 @@ template<typename T>
 class Quicksort : public MultithreadedSort<T> {
 public:
     Quicksort(unsigned int nbThreads) : MultithreadedSort<T>(nbThreads), threads(nbThreads), monitor(this) {
-        for (int i = 0; i < nbThreads; ++i) {
+        for (int i = 0; i < threads.size(); ++i) {
             threads[i] = new PcoThread(&Monitor<T>::executeTask, &monitor);
         }
     }
@@ -28,7 +28,6 @@ public:
      * @param array is the sequence to sort
      */
     void sort(std::vector<T> &array) override {
-        //quicksort({ array, 0, (int) array.size() });
         monitor.scheduleTask({ array, 0, (int)array.size() });
 
         for (size_t i = 0; i < threads.size(); ++i) {
@@ -38,9 +37,9 @@ public:
     }
 
     void quicksort(Task<T> task) {
-        //std::cout << "execute task " << task.begin << " " << task.end << std::endl;
         if (task.begin >= task.end || task.begin < 0) {
-            monitor.flushTasks();
+            monitor.decrementNbWorking();
+            monitor.executeTask();
             return;
         }
 
@@ -49,12 +48,8 @@ public:
         monitor.scheduleTask({ task.values, task.begin, pivot - 1 });
         monitor.scheduleTask({ task.values, pivot + 1, task.end });
 
+        monitor.decrementNbWorking();
         monitor.executeTask();
-        //quicksort({ task.values, task.begin, pivot - 1 });
-        //std::cout << "schedule task " << task.begin << " " << pivot - 1<< std::endl;
-
-        //quicksort({ task.values, pivot + 1, task.end });
-        //std::cout << "schedule task " << pivot + 1 << " " << task.end << std::endl;
     }
 
 private:
