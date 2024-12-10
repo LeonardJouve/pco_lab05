@@ -18,9 +18,7 @@ template<typename T>
 class Quicksort : public MultithreadedSort<T> {
 public:
     Quicksort(unsigned int nbThreads) : MultithreadedSort<T>(nbThreads), threads(nbThreads), monitor(this) {
-        for (int i = 0; i < threads.size(); ++i) {
-            threads[i] = new PcoThread(&Monitor<T>::executeTask, &monitor);
-        }
+
     }
 
     /**
@@ -28,12 +26,17 @@ public:
      * @param array is the sequence to sort
      */
     void sort(std::vector<T> &array) override {
+        for (int i = 0; i < threads.size(); ++i) {
+            threads[i] = new PcoThread(&Monitor<T>::executeTask, &monitor);
+        }
         monitor.scheduleTask({ array, 0, (int)array.size() });
 
         for (size_t i = 0; i < threads.size(); ++i) {
             threads[i]->join();
             delete threads[i];
         }
+
+        monitor.reset();
     }
 
     void quicksort(Task<T> task) {

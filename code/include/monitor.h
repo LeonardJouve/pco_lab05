@@ -27,6 +27,10 @@ class Monitor {
 
 public:
     Monitor(Quicksort<T> *quicksort) : quicksort(quicksort), conditionVariable(false), mutex(), flag(false) {}
+    void reset() {
+        isStarted = false;
+        flag = false;
+    }
 
     bool tasksIsEmpty() {
         mutex.lock();
@@ -44,7 +48,7 @@ public:
     void scheduleTask(Task<T> task) {
         mutex.lock();
         if (!isStarted) {
-            flag = false;
+            //flag = false;
             isStarted = true;
             started.notifyAll();
         }
@@ -86,7 +90,7 @@ public:
         mutex.lock();
         flag = true;
         conditionVariable.notifyAll();
-        isStarted = false;
+        //isStarted = false;
         mutex.unlock();
     }
 };
