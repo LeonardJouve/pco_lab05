@@ -9,17 +9,16 @@
  * @param size of the sequence to sort
  * @param nthreads number of threads to use to sort the sequence
  */
-void BenchmarkQuicksort(int size, int nthreads)
-{
+void BenchmarkQuicksort(int size, int nthreads) {
     Quicksort<int> sorter(nthreads);
     int seed = 23;
     std::vector<int> test = generateSequence(size, seed);
     sorter.sort(test);
 }
 
-static void BM_QS_MANYTHREADS(benchmark::State& state) {
+static void BM_QS_MANYTHREADS(benchmark::State &state) {
     int nthreads = state.range(0);
-    int size = 5000000;
+    int size = 10000;
     for (auto _ : state) {
         BenchmarkQuicksort(size, nthreads);
     }
