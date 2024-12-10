@@ -34,13 +34,12 @@ public:
     }
 
     void executeTask() {
-        if (flag && tasks.empty()) return; // TODO execute left tasks even if flag
 
         std::cout << "execute task" << std::endl;
 
         mutex.lock();
         while (tasks.empty()) conditionVariable.wait(&mutex);
-        if (flag) {
+        if (tasks.empty() && flag) {
             mutex.unlock();
             return;
         }
@@ -50,7 +49,7 @@ public:
 
         mutex.unlock();
 
-        std::cout << "start task " << task.begin << " "<< task.end << std::endl;
+        std::cout << "start task " << task.begin << " " << task.end << std::endl;
 
         quicksort->quicksort(task);
     }

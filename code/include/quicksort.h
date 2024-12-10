@@ -29,7 +29,7 @@ public:
      */
     void sort(std::vector<T> &array) override {
         //quicksort({ array, 0, (int) array.size() });
-        monitor.scheduleTask({ array, 0, (int) array.size() });
+        monitor.scheduleTask({ array, 0, (int)array.size() });
 
         for (size_t i = 0; i < threads.size(); ++i) {
             threads[i]->join();
