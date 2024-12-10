@@ -56,14 +56,13 @@ Afin d'éviter l'attente active des threads, nous avons utilisé un PcoCondition
 
 ## Benchmark
 
-| Nombre de threads | Taille du tableau | Temps d'exécution (ms) |
-|-------------------|-------------------|------------------------|
-| 1                 | 10³               | 45                     |
-| 2                 | 10³               | 25                     |
-| 4                 | 10³               | 15                     |
-| 8                 | 10³               | 10                     |
-| 1                 | 10⁶               | 4500                   |
-| 2                 | 10⁶               | 2500                   |
-| 4                 | 10⁶               | 1500                   |
-| 8                 | 10⁶               | 1000                   |
+| Nombre de threads | Temps d'exécution (ms)   | CPU (ns) | Iterations |
+|--------------------|-------------------------|----------|------------|
+| 1                  | 7.095                   | 444,716  | 98         |
+| 2                  | 12.704                  | 466,507  | 56         |
+| 4                  | 18.551                  | 610,538  | 36         |
+| 8                  | 34.977                  | 1,344,726| 20         |
+| 16                 | 43.207                  | 2,820,687| 13         |
 
+
+* Note : Nous avons du réduire la taille du tableau à 10'000 afin de pouvoir run le benchmark. Ceci à cause d'un segfault lorsque la taiile du tableau est trop grande
