@@ -1,5 +1,6 @@
 #include <pcosynchro/pcoconditionvariable.h>
 #include <vector>
+#include <queue>
 #include <iostream>
 
 template <typename T>
