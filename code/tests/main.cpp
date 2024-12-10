@@ -13,24 +13,42 @@ void test(int nbThreads, int size, int seed) {
     Quicksort<int> sorter(nbThreads);
     std::vector<int> array = generateSequence(size, seed);
     sorter.sort(array);
-
     EXPECT_FALSE(array.empty());  // check that the result is not empty
     EXPECT_TRUE(isSorted(array)); // check that result is sorted
-
-    for (int i : array) {
-        std::cout << i << " ";
-    }
-    std::cout << std::endl;
 }
 
-TEST(SortingTest, Test) {
-    int size = 10;
-    int nbThreads = 10;
-    int seed = 0;
+/**
+ * @brief testSortedArray Verifies that a sorted array remains sorted.
+ * @param nbThreads number of threads to use
+ * @param size of the sequence
+ */
+void testSortedArray(int nbThreads, int size) {
+    Quicksort<int> sorter(nbThreads);
+    std::vector<int> array = generateSortedSequence(size);
+    sorter.sort(array);
+    EXPECT_FALSE(array.empty());  // check that the result is not empty
+    EXPECT_TRUE(isSorted(array)); // array should remain sorted
+}
 
-    std::cout << "Yoo" << std::endl;
 
-    test(nbThreads, size, seed);
+TEST(SortingTest, SingleThreadSmallArray) {
+    test(1, 10, 42);
+}
+
+TEST(SortingTest, MultiThreadSmallArray) {
+    test(4, 10, 42);
+}
+
+TEST(SortingTest, SingleThreadLargeArray) {
+    test(1, 10000, 42);
+}
+
+TEST(SortingTest, MultiThreadLargeArray) {
+    test(8, 10000, 42);
+}
+
+TEST(SortingTest, AlreadySortedArray) {
+    testSortedArray(4, 1000);
 }
 
 int main(int argc, char **argv) {

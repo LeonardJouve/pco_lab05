@@ -17,9 +17,7 @@
 template<typename T>
 class Quicksort : public MultithreadedSort<T> {
 public:
-    Quicksort(unsigned int nbThreads) : MultithreadedSort<T>(nbThreads), threads(nbThreads), monitor(this) {
-
-    }
+    Quicksort(unsigned int nbThreads) : MultithreadedSort<T>(nbThreads), threads(nbThreads), monitor(this) {}
 
     /**
      * @brief sort Manages the threads to sort the given sequence.

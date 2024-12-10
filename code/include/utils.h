@@ -40,4 +40,15 @@ std::vector<int> generateSequence(unsigned int seqLen, unsigned int seed) {
     return randomSequence;
 }
 
+std::vector<int> generateSortedSequence(unsigned int seqLen) {
+    std::vector<int> seq;
+    seq.reserve(seqLen);
+
+    for (unsigned int i = 0; i < seqLen; ++i) {
+        seq.push_back(i + 1);
+    }
+
+    return seq;
+}
+
 #endif // UTILS_H

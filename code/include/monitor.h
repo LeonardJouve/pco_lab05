@@ -27,9 +27,11 @@ class Monitor {
 
 public:
     Monitor(Quicksort<T> *quicksort) : quicksort(quicksort), conditionVariable(false), mutex(), flag(false) {}
+
     void reset() {
         isStarted = false;
         flag = false;
+        //while (!tasks.empty()) tasks.pop();//just in case
     }
 
     bool tasksIsEmpty() {
