@@ -31,13 +31,10 @@ public:
     void reset() {
         isStarted = false;
         flag = false;
-        //while (!tasks.empty()) tasks.pop();//just in case
     }
 
     bool tasksIsEmpty() {
-        mutex.lock();
         int temp = nbWorking;
-        mutex.unlock();
         return tasks.empty() && temp == 0;
     }
 
@@ -50,7 +47,6 @@ public:
     void scheduleTask(Task<T> task) {
         mutex.lock();
         if (!isStarted) {
-            //flag = false;
             isStarted = true;
             started.notifyAll();
         }
@@ -66,14 +62,12 @@ public:
         mutex.lock();
         while (!isStarted) started.wait(&mutex);
 
-        mutex.unlock();
-
         if (tasksIsEmpty()) {
             flushTasks();
+            mutex.unlock();
             return;
         }
 
-        mutex.lock();
         while (tasks.empty() && !flag) conditionVariable.wait(&mutex);
         if (flag) {
             mutex.unlock();
@@ -89,10 +83,7 @@ public:
     }
 
     void flushTasks() {
-        mutex.lock();
         flag = true;
         conditionVariable.notifyAll();
-        //isStarted = false;
-        mutex.unlock();
     }
 };
